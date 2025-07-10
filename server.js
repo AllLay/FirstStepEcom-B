@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 const itemRoutes = require('./routes/items');
-const uploadRoutes = require('./routes/upload');
 const authRoutes = require('./routes/auth');
 const privateRoutes = require('./routes/private');
 
@@ -14,15 +12,27 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
-app.use(cors({
-  origin: 'http://localhost:3000',
+const whitelist = [
+  'http://localhost:3000',
+  'https://first-step-ecom.vercel.app',
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/items', itemRoutes);
-app.use('/api/upload', uploadRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/private', privateRoutes);
 
