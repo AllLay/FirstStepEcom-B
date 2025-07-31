@@ -35,6 +35,7 @@ app.use(express.json());
 app.use('/api/items', itemRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/private', privateRoutes);
+app.use("/api/cart", require("./routes/cart"));
 
 const startServer = async () => {
   try {

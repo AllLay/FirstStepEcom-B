@@ -28,6 +28,18 @@ const UserSchema = new mongoose.Schema({
   emailVerificationExpires: {
     type: Date,
   },
+  cart: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+    },
+  ],
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {

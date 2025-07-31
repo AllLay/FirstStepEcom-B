@@ -40,7 +40,11 @@ router.put('/:id', auth, async (req, res) => {
     const product = await Product.findOne({ _id: req.params.id, user_id: req.user._id });
     if (!product) return res.status(404).json({ message: 'Product not found or unauthorized' });
 
-    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updated = await Product.findOneAndUpdate(
+      { _id: req.params.id, user_id: req.user._id },
+      req.body,
+      { new: true }
+    );
     res.json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
