@@ -14,7 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
 const whitelist = [
   'http://localhost:3000',
-  'https://first-step-ecom.vercel.app',
+  'https://firststepecom.vercel.app',
 ];
 
 const corsOptions = {
